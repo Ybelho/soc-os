@@ -1,0 +1,13 @@
+id: DNS_SUSPICIOUS_SUBDOMAIN_PATTERN
+severity: high
+title: "DNS avec sous-domaines très longs / aléatoires"
+description: "Heuristique: requêtes DNS avec labels longs (possible tunneling/DGA)."
+sql: |
+  SELECT src_ip, query,
+         LENGTH(query) AS qlen
+  FROM view_dns
+  WHERE query IS NOT NULL
+    AND LENGTH(query) >= 35
+  ORDER BY qlen DESC
+  LIMIT 200
+

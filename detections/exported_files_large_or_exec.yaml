@@ -1,0 +1,17 @@
+id: EXPORTED_FILES_LARGE_OR_EXEC
+severity: high
+title: "Fichiers exportés HTTP: gros volumes / extensions exécutables"
+description: "Triage rapide sur objets exportés (hashing)."
+sql: |
+  SELECT filename, size, sha256, sha1, md5
+  FROM exported_files
+  WHERE size >= 5000000
+     OR filename ILIKE '%.exe'
+     OR filename ILIKE '%.dll'
+     OR filename ILIKE '%.js'
+     OR filename ILIKE '%.vbs'
+     OR filename ILIKE '%.ps1'
+     OR filename ILIKE '%.bat'
+  ORDER BY size DESC
+  LIMIT 200
+

@@ -1,0 +1,11 @@
+id: PAYLOAD_COMMAND_ARTIFACTS
+severity: high
+title: "Artefacts de commandes détectées on-the-wire"
+description: "Présence de patterns (wget/curl/powershell/...) dans les payloads (trafic clair)."
+sql: |
+  SELECT timestamp, proto, src_ip, src_port, dst_ip, dst_port, pattern, confidence, match
+  FROM payload_hits
+  WHERE confidence IN ('high','medium')
+  ORDER BY timestamp ASC
+  LIMIT 200
+

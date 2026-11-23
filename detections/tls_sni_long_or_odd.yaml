@@ -1,0 +1,11 @@
+id: TLS_SNI_LONG_OR_ODD
+severity: medium
+title: "TLS: SNI anormalement long"
+description: "Heuristique: SNI très long (possible DGA/tunneling)."
+sql: |
+  SELECT timestamp, src_ip, dst_ip, sni, LENGTH(sni) AS sni_len
+  FROM view_tls
+  WHERE sni IS NOT NULL AND LENGTH(sni) >= 40
+  ORDER BY sni_len DESC
+  LIMIT 200
+

@@ -1,0 +1,28 @@
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+__pycache__/
+*.py[cod]
+.venv*/
+venv/
+.venvSOC/
+
+# Chainlit
+.chainlit/translations/
+.files/
+
+# Divers
+*.zip
+*.log
+.DS_Store
+
+# Données d'analyse (captures, bases, artefacts) : générées à l'exécution
+data/*
+!data/.gitkeep
+*.pcap
+*.pcapng
+*.db
+*.db.wal

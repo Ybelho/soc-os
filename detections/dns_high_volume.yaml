@@ -1,0 +1,18 @@
+id: DNS_HIGH_VOLUME
+severity: medium
+title: "Volume DNS élevé sur une fenêtre courte"
+description: "Détecte un volume élevé de requêtes DNS par source sur les 10 dernières minutes (ancrées sur le max timestamp du PCAP)."
+sql: |
+  WITH anchor AS (SELECT MAX(timestamp) AS tmax FROM view_dns),
+  win AS (
+    SELECT *
+    FROM view_dns
+    WHERE timestamp >= (SELECT tmax FROM anchor) - INTERVAL '10 minutes'
+  )
+  SELECT src_ip, COUNT(*) AS dns_queries, COUNT(DISTINCT query) AS uniq_queries
+  FROM win
+  WHERE src_ip IS NOT NULL AND query IS NOT NULL
+  GROUP BY 1
+  HAVING dns_queries >= 2000
+  ORDER BY dns_queries DESC
+

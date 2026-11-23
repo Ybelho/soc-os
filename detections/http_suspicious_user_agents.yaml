@@ -1,0 +1,17 @@
+id: HTTP_SUSPICIOUS_USER_AGENTS
+severity: medium
+title: "HTTP: user-agents suspects (cli/outils)"
+description: "Heuristique: UA typiques de curl/wget/python/Go/httpclient."
+sql: |
+  SELECT user_agent, COUNT(*) AS hits
+  FROM view_http
+  WHERE user_agent IS NOT NULL
+    AND (
+      user_agent ILIKE '%curl%' OR user_agent ILIKE '%wget%' OR
+      user_agent ILIKE '%python%' OR user_agent ILIKE '%go-http-client%' OR
+      user_agent ILIKE '%httpclient%' OR user_agent ILIKE '%powershell%'
+    )
+  GROUP BY 1
+  ORDER BY hits DESC
+  LIMIT 100
+

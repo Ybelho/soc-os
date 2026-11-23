@@ -1,0 +1,13 @@
+id: DNS_TXT_VOLUME
+severity: medium
+title: "DNS: volume de TXT (possible exfil)"
+description: "Heuristique: beaucoup de requêtes TXT depuis un même hôte."
+sql: |
+  SELECT src_ip, COUNT(*) AS txt_queries, COUNT(DISTINCT query) AS uniq_q
+  FROM view_dns
+  WHERE qtype_name ILIKE '%TXT%'
+  GROUP BY 1
+  HAVING txt_queries >= 200
+  ORDER BY txt_queries DESC
+  LIMIT 50
+

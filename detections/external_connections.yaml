@@ -1,0 +1,16 @@
+id: EXTERNAL_CONNECTIONS_TOP
+severity: low
+title: "Connexions vers IP publiques (top)"
+description: "Liste les destinations publiques les plus fréquentes (si présentes)."
+sql: |
+  SELECT dst_ip, COUNT(*) AS hits
+  FROM events
+  WHERE dst_ip IS NOT NULL
+    AND NOT (
+      dst_ip LIKE '10.%' OR dst_ip LIKE '192.168.%' OR dst_ip LIKE '127.%'
+      OR regexp_matches(dst_ip, '^172\.(1[6-9]|2[0-9]|3[0-1])\..*')
+    )
+  GROUP BY 1
+  ORDER BY hits DESC
+  LIMIT 50
+

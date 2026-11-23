@@ -1,0 +1,12 @@
+id: SURICATA_HIGH_SEVERITY_ALERTS
+severity: high
+title: "Suricata: alertes severité élevée"
+description: "Liste les alertes Suricata avec sévérité >= 2 (selon champ Suricata) pour triage rapide."
+sql: |
+  SELECT timestamp, src_ip, src_port, dst_ip, dst_port, proto, app_proto,
+         severity, signature_id, signature, category
+  FROM view_suri_alerts
+  WHERE severity IS NOT NULL AND severity <= 2
+  ORDER BY timestamp ASC
+  LIMIT 200
+

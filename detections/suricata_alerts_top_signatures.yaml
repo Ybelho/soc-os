@@ -1,0 +1,11 @@
+id: SURICATA_ALERTS_TOP_SIGNATURES
+severity: medium
+title: "Suricata: top signatures"
+description: "Top des signatures (bruit vs signal)."
+sql: |
+  SELECT signature_id, signature, category, COUNT(*) AS hits
+  FROM view_suri_alerts
+  GROUP BY 1,2,3
+  ORDER BY hits DESC
+  LIMIT 50
+
